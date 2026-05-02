@@ -1,0 +1,29 @@
+---
+interface Props {
+  url: string;
+  dnt?: boolean;
+}
+const { url, dnt = true } = Astro.props;
+const oembedUrl = `https://publish.twitter.com/oembed?url=${encodeURIComponent(url)}&dnt=${dnt}&omit_script=false`;
+let html: string | null = null;
+try {
+  const response = await fetch(oembedUrl);
+  if (response.ok) {
+    const data = await response.json();
+    html = data.html ?? null;
+  }
+} catch (_e) {
+  html = null;
+}
+---
+{html ? (
+  <div class="x-embed" set:html={html} />
+) : (
+  <p class="x-embed-fallback">
+    <a href={url} rel="nofollow noopener noreferrer" target="_blank">{url}</a>
+  </p>
+)}
+<style>
+  .x-embed { margin: 1rem 0; }
+  .x-embed-fallback { font-size: 0.9rem; color: var(--muted); }
+</style>

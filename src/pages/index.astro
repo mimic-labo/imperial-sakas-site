@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const articles = (await getCollection('articles')).sort(
+  (a, b) => b.data.updatedDate.valueOf() - a.data.updatedDate.valueOf()
+);
+---
+<BaseLayout
+  title="imperial — AI / SEO / LLMO トレンドメディア"
+  description="AI動向・SEO・LLMO・Claude Code を扱う情報まとめメディア。X 投稿や Web 情報を独自分析と共に再編集する。"
+>
+  <h1>imperial</h1>
+  <p class="lead">AI / SEO / LLMO / Claude Code のトレンドを独自視点でまとめる技術メディア。</p>
+
+  <section>
+    <h2>最新記事</h2>
+    <ul class="article-list">
+      {articles.map((a) => (
+        <li>
+          <a href={`/articles/${a.data.slug}/`}>
+            <span class="cat">[{a.data.category}]</span>
+            <span class="title">{a.data.title}</span>
+          </a>
+          <p class="desc">{a.data.description}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>
+<style>
+  .lead { color: var(--muted); font-size: 1.05rem; }
+  .article-list { list-style: none; padding: 0; }
+  .article-list li { margin: 1.25rem 0; padding-bottom: 1rem; border-bottom: 1px solid #f0f0f0; }
+  .article-list a { text-decoration: none; color: var(--fg); }
+  .cat { display: inline-block; font-size: 0.8rem; color: var(--accent); margin-right: 0.5rem; }
+  .title { font-weight: 600; font-size: 1.05rem; }
+  .desc { color: var(--muted); font-size: 0.9rem; margin: 0.25rem 0 0; }
+</style>

@@ -1,0 +1,30 @@
+---
+interface Props {
+  variant: 'lead' | 'summary';
+}
+const { variant } = Astro.props;
+const label = variant === 'lead' ? '結論' : 'まとめ';
+---
+<aside class={`conclusion conclusion-${variant}`} role="complementary" aria-label={label}>
+  <span class="conclusion-label">{label}</span>
+  <div class="conclusion-body">
+    <slot />
+  </div>
+</aside>
+<style>
+  .conclusion {
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    background: #fafaf6;
+    border-radius: 4px;
+  }
+  .conclusion-label {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .conclusion-summary { background: #f5f5f0; }
+</style>

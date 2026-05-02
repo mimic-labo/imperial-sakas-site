@@ -1,0 +1,34 @@
+---
+interface Citation {
+  url: string;
+  author: string;
+  publishedAt: string;
+  type: 'x_post' | 'web_article' | 'official_doc' | 'press_release' | 'academic';
+}
+interface Props {
+  citations: Citation[];
+}
+const { citations } = Astro.props;
+---
+<section class="citation-list" aria-label="引用元一覧">
+  <h2>引用元一覧</h2>
+  <ol>
+    {citations.map((c) => (
+      <li>
+        <a href={c.url} rel="nofollow noopener noreferrer" target="_blank">{c.author}</a>
+        <span class="cl-date"> — {c.publishedAt}</span>
+      </li>
+    ))}
+  </ol>
+</section>
+<style>
+  .citation-list {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e0e0e0;
+  }
+  .citation-list h2 { font-size: 1.1rem; }
+  .citation-list ol { padding-left: 1.5rem; }
+  .citation-list li { margin: 0.5rem 0; word-break: break-all; }
+  .cl-date { color: var(--muted); font-size: 0.85rem; }
+</style>

@@ -1,0 +1,33 @@
+---
+interface Props {
+  author: string;
+  url: string;
+  date: string;
+  type?: 'x_post' | 'web_article' | 'official_doc' | 'press_release' | 'academic';
+}
+const { author, url, date, type = 'web_article' } = Astro.props;
+const typeLabel = {
+  x_post: 'X投稿',
+  web_article: 'Web記事',
+  official_doc: '公式',
+  press_release: 'プレス',
+  academic: '学術',
+}[type];
+---
+<p class="citation-caption">
+  出典:
+  <a href={url} rel="nofollow noopener noreferrer" target="_blank">{author}</a>
+  <span class="citation-date">— {date}</span>
+  <span class="citation-type">[{typeLabel}]</span>
+</p>
+<style>
+  .citation-caption {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 0.25rem 0 1rem;
+    padding-left: 1rem;
+    border-left: 3px solid #ddd;
+  }
+  .citation-date { margin-left: 0.25rem; }
+  .citation-type { margin-left: 0.5rem; font-size: 0.75rem; }
+</style>

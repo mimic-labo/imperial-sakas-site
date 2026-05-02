@@ -1,0 +1,46 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TableOfContents from '../../components/article/TableOfContents.astro';
+import CitationList from '../../components/article/CitationList.astro';
+import JsonLd from '../../components/seo/JsonLd.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return articles.map((article) => ({
+    params: { slug: article.data.slug },
+    props: { article },
+  }));
+}
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+}
+
+const { article } = Astro.props;
+const { Content, headings } = await render(article);
+const updated = article.data.updatedDate.toLocaleDateString('ja-JP', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+---
+<BaseLayout title={article.data.title} description={article.data.description}>
+  <JsonLd type="Article" article={article} />
+  <JsonLd type="Breadcrumb" article={article} />
+  <article>
+    <h1>{article.data.title}</h1>
+    <p class="meta">最終更新: {updated} / カテゴリ: {article.data.category}</p>
+    <TableOfContents headings={headings} />
+    <Content />
+    <CitationList citations={article.data.citations} />
+  </article>
+</BaseLayout>
+<style>
+  .meta {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin: 0.25rem 0 1.5rem;
+  }
+</style>

@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface ArticleProps {
+  type: 'Article';
+  article: CollectionEntry<'articles'>;
+}
+interface BreadcrumbProps {
+  type: 'Breadcrumb';
+  article: CollectionEntry<'articles'>;
+}
+type Props = ArticleProps | BreadcrumbProps;
+const props = Astro.props as Props;
+const siteUrl = Astro.site?.toString() ?? 'https://imperial.sakas.work/';
+
+let payload: Record<string, unknown> | null = null;
+
+if (props.type === 'Article') {
+  const a = props.article.data;
+  payload = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: a.title,
+    description: a.description,
+    datePublished: a.publishedDate.toISOString(),
+    dateModified: a.updatedDate.toISOString(),
+    inLanguage: 'ja',
+    keywords: a.tags.join(', '),
+    articleSection: a.category,
+    author: { '@type': 'Organization', name: 'imperial' },
+    publisher: { '@type': 'Organization', name: 'imperial', url: siteUrl },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${siteUrl}articles/${a.slug}/` },
+  };
+} else if (props.type === 'Breadcrumb') {
+  const a = props.article.data;
+  payload = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+      { '@type': 'ListItem', position: 2, name: a.category, item: `${siteUrl}categories/${a.category}/` },
+      { '@type': 'ListItem', position: 3, name: a.title },
+    ],
+  };
+}
+---
+{payload && <script type="application/ld+json" set:html={JSON.stringify(payload)} />}

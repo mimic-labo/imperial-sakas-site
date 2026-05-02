@@ -1,0 +1,65 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+}
+const { title, description, canonical } = Astro.props;
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toString();
+---
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/">imperial</a>
+        <a href="/categories/ai/">AI</a>
+        <a href="/categories/seo/">SEO</a>
+        <a href="/categories/llmo/">LLMO</a>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer>
+      <small>© imperial.sakas.work</small>
+    </footer>
+  </body>
+</html>
+<style is:global>
+  :root {
+    --fg: #1a1a1a;
+    --bg: #ffffff;
+    --accent: #c9a64a;
+    --muted: #666;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Yu Gothic UI', sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.7;
+    margin: 0;
+    padding: 0;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 2rem 1rem; }
+  header nav { padding: 1rem; border-bottom: 1px solid #eee; }
+  header nav a { margin-right: 1rem; text-decoration: none; color: var(--fg); }
+  footer { padding: 2rem 1rem; text-align: center; color: var(--muted); }
+  h1, h2, h3 { line-height: 1.4; }
+  a { color: var(--accent); }
+  pre, code { font-family: 'SF Mono', Consolas, monospace; }
+</style>

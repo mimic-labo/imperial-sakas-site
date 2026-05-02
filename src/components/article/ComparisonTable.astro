@@ -1,0 +1,26 @@
+---
+interface Props {
+  headers: string[];
+  rows: string[][];
+  caption?: string;
+}
+const { headers, rows, caption } = Astro.props;
+---
+<div class="comparison-table-wrapper">
+  <table class="comparison-table">
+    {caption && <caption>{caption}</caption>}
+    <thead>
+      <tr>{headers.map((h) => <th scope="col">{h}</th>)}</tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => <tr>{row.map((cell) => <td>{cell}</td>)}</tr>)}
+    </tbody>
+  </table>
+</div>
+<style>
+  .comparison-table-wrapper { overflow-x: auto; margin: 1.5rem 0; }
+  .comparison-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  .comparison-table caption { font-size: 0.9rem; color: var(--muted); margin-bottom: 0.5rem; caption-side: top; }
+  .comparison-table th, .comparison-table td { padding: 0.5rem 0.75rem; border: 1px solid #e0e0e0; text-align: left; }
+  .comparison-table th { background: #f5f5f0; font-weight: 600; }
+</style>
