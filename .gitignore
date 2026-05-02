@@ -3,6 +3,9 @@ dist/
 # generated types
 .astro/
 
+# Wrangler (Cloudflare local dev cache)
+.wrangler/
+
 # dependencies
 node_modules/
 
