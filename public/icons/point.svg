@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="POINT">
+  <title>POINT</title>
+  <defs>
+    <linearGradient id="pointBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d6b25c"/>
+      <stop offset="100%" stop-color="#b48d33"/>
+    </linearGradient>
+  </defs>
+  <!-- 背景の角丸ダイヤ風 -->
+  <rect x="3" y="3" width="42" height="42" rx="10" ry="10" fill="url(#pointBg)" stroke="#8a6a26" stroke-width="1.2"/>
+  <!-- 内側の影 -->
+  <rect x="5" y="5" width="38" height="38" rx="8" ry="8" fill="none" stroke="#fff" stroke-opacity="0.35" stroke-width="1"/>
+  <!-- POINT テキスト -->
+  <text x="24" y="22" font-family="-apple-system, 'Segoe UI', sans-serif" font-size="9" font-weight="800" fill="#fff" text-anchor="middle" letter-spacing="0.5">POINT</text>
+  <!-- アクセントライン -->
+  <line x1="11" y1="28" x2="37" y2="28" stroke="#fff" stroke-opacity="0.6" stroke-width="1" stroke-linecap="round"/>
+  <!-- インジケータドット 3 個（要点を示す） -->
+  <circle cx="17" cy="36" r="2.2" fill="#fff"/>
+  <circle cx="24" cy="36" r="2.2" fill="#fff"/>
+  <circle cx="31" cy="36" r="2.2" fill="#fff"/>
+</svg>

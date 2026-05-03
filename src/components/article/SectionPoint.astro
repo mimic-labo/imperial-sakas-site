@@ -1,0 +1,51 @@
+---
+// 各 H2 冒頭に配置する「このセクションの要点」ブロック
+// 中原 V4.1 由来の AI 要約フォーマットを imperial-sakas 用にオリジナル化
+// 詳細: knowledge/articles/imperial-sakas_takuma-v4.1-mapping-plan_20260502.md
+---
+<aside class="section-point" role="complementary" aria-label="このセクションの要点">
+  <img src="/icons/point.svg" alt="POINT" width="48" height="48" class="point-mark" loading="lazy" decoding="async" />
+  <div class="point-body">
+    <span class="point-label">このセクションの要点</span>
+    <div class="point-text"><slot /></div>
+  </div>
+</aside>
+<style>
+  .section-point {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    margin: 1.25rem 0 1.75rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid #e8e0c8;
+    border-left: 4px solid var(--accent, #c9a64a);
+    border-radius: 4px;
+    background: #fdfbf3;
+  }
+  .point-mark {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    display: block;
+  }
+  .point-body {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .point-label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--accent, #c9a64a);
+    margin-bottom: 0.2rem;
+  }
+  .point-text {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--fg, #1a1a1a);
+  }
+  .point-text :global(p) {
+    margin: 0;
+  }
+</style>
