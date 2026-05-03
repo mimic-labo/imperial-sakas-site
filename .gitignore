@@ -6,6 +6,9 @@ dist/
 # Wrangler (Cloudflare local dev cache)
 .wrangler/
 
+# サブエージェント中間成果物（記事ごとに生成、git 管理外）
+.deploy-workspace/
+
 # dependencies
 node_modules/
 
