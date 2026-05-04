@@ -104,7 +104,14 @@ if (contentType.includes('application/json')) {
     process.exit(1);
   }
   imgBuf = Buffer.from(b64, 'base64');
-  ext = 'png'; // FLUX 系は PNG
+  // magic byte で実体形式を判定（FLUX.1 schnell は実は JPEG を返す等、モデル依存で混在）
+  if (imgBuf[0] === 0xff && imgBuf[1] === 0xd8 && imgBuf[2] === 0xff) {
+    ext = 'jpg';
+  } else if (imgBuf[0] === 0x89 && imgBuf[1] === 0x50 && imgBuf[2] === 0x4e && imgBuf[3] === 0x47) {
+    ext = 'png';
+  } else {
+    ext = 'png'; // fallback
+  }
 } else if (contentType.startsWith('image/')) {
   // Phoenix 1.0: image/jpg のバイナリ stream
   const ab = await res.arrayBuffer();

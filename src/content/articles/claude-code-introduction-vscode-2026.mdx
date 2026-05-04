@@ -164,16 +164,22 @@ ChatGPT と Claude Code の決定的な違いは「ローカルファイルを�
 
 ```mermaid
 flowchart LR
-  User([開発者]) -->|自然言語で指示| ClaudeCode[Claude Code]
-  ClaudeCode -->|読込・編集| Files[(プロジェクト<br/>ファイル)]
-  ClaudeCode -->|シェル実行| Term[ターミナル]
-  ClaudeCode -->|MCP 経由| Ext[外部ツール<br/>Slack / GA4 / Sheets]
-  ClaudeCode -.->|永続記憶| Memory[CLAUDE.md<br/>メモリ]
-  ClaudeCode -.->|並列実行| Sub[サブエージェント]
-  classDef core fill:#1e3a5f,color:#fff,stroke:#c9a64a,stroke-width:2px
-  classDef ext fill:#fff,color:#1a1a1a,stroke:#c9a64a
+  User([開発者]) -->|自然言語で指示| ClaudeCode([Claude Code])
+  ClaudeCode -->|読込・編集| Files([プロジェクト<br/>ファイル])
+  ClaudeCode -->|シェル実行| Term([ターミナル])
+  ClaudeCode -->|MCP 経由| Ext([外部ツール<br/>Slack / GA4 / Sheets])
+  ClaudeCode -.->|永続記憶| Memory([CLAUDE.md<br/>メモリ])
+  ClaudeCode -.->|並列実行| Sub([サブエージェント])
+
+  classDef core fill:#c9a64a,stroke:#c9a64a,color:#0a0e16,stroke-width:0px,font-weight:700
+  classDef user fill:#0a0e16,stroke:#cfcfcf,color:#f5f5f5,stroke-width:1.5px,font-weight:600
+  classDef ext fill:#1e2a3a,stroke:#c9a64a,color:#f5f5f5,stroke-width:1.5px,font-weight:500
+
   class ClaudeCode core
+  class User user
   class Files,Term,Ext,Memory,Sub ext
+
+  linkStyle default stroke:#c9a64a,stroke-width:1.5px
 ```
 
 中心の Claude Code に **5 つの腕**が伸びている、と捉えると関係性が頭に入ります。実線は「直接の操作」、破線は「永続化・並列化」の補助レイヤーです。
@@ -375,28 +381,23 @@ OpenAI Codex CLI と OSS 系（Cline / Aider）は補足の段落で扱います
 文章で並べてもピンと来づらいので、**「使い方の形態（IDE 内 / 拡張 / CLI）」と「依頼粒度（補完 / 編集 / 委譲）」**の 2 軸で位置を整理します。
 
 ```mermaid
-flowchart TB
-  subgraph "AI Coding ツール俯瞰 (2026-05)"
-    direction LR
-    CC["Claude Code<br/>(Anthropic)"]
-    Cursor["Cursor<br/>(Anysphere)"]
-    Copilot["GitHub Copilot<br/>(GitHub / Microsoft)"]
-    AntiG["Google Antigravity<br/>(Google)"]
-  end
+flowchart LR
+  CC([Claude Code]) -->|形態| CCForm[CLI + VS Code 拡張]
+  CC -->|粒度| CCGrain[業務委譲型 / 自律実行]
+  Cursor([Cursor]) -->|形態| CursorForm[専用 IDE / VS Code フォーク]
+  Cursor -->|粒度| CursorGrain[IDE 内補完・編集型]
+  Copilot([GitHub Copilot]) -->|形態| CopilotForm[VS Code 拡張]
+  Copilot -->|粒度| CopilotGrain[インライン補完中心]
+  AntiG([Google Antigravity]) -->|形態| AntiForm[専用エディタ]
+  AntiG -->|粒度| AntiGrain[Gemini 3 統合・委譲型]
 
-  CC -->|形態| CCForm([CLI + VS Code 拡張])
-  CC -->|粒度| CCGrain([業務委譲型 / 自律実行])
-  Cursor -->|形態| CursorForm([専用 IDE / VS Code フォーク])
-  Cursor -->|粒度| CursorGrain([IDE 内補完・編集型])
-  Copilot -->|形態| CopilotForm([VS Code 拡張])
-  Copilot -->|粒度| CopilotGrain([インライン補完中心])
-  AntiG -->|形態| AntiForm([専用エディタ])
-  AntiG -->|粒度| AntiGrain([Gemini 3 統合・委譲型])
+  classDef tool fill:#c9a64a,stroke:#c9a64a,color:#0a0e16,stroke-width:0px,font-weight:700
+  classDef attr fill:#1e2a3a,stroke:#cfcfcf,color:#f5f5f5,stroke-width:1px,font-weight:500
 
-  classDef tool fill:#1e3a5f,color:#fff,stroke:#c9a64a,stroke-width:2px
-  classDef form fill:#fff,color:#1a1a1a,stroke:#aaa
   class CC,Cursor,Copilot,AntiG tool
-  class CCForm,CursorForm,CopilotForm,AntiForm,CCGrain,CursorGrain,CopilotGrain,AntiGrain form
+  class CCForm,CursorForm,CopilotForm,AntiForm,CCGrain,CursorGrain,CopilotGrain,AntiGrain attr
+
+  linkStyle default stroke:#c9a64a,stroke-width:1.2px
 ```
 
 ざっくり言えば、**「IDE の中で書く手を AI に支えてもらいたい」なら Cursor / Copilot**、**「業務タスクを丸ごと AI に任せたい」なら Claude Code / Antigravity** です。本記事では業務委譲型としての Claude Code を主役に据えています。
