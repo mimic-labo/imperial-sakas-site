@@ -26,7 +26,11 @@ const updated = article.data.updatedDate.toLocaleDateString('ja-JP', {
   day: '2-digit',
 });
 ---
-<BaseLayout title={article.data.title} description={article.data.description}>
+<BaseLayout
+  title={article.data.title}
+  description={article.data.description}
+  ogImage={article.data.ogImage ?? `/og/${article.data.slug}.png`}
+>
   <JsonLd type="Article" article={article} />
   <JsonLd type="Breadcrumb" article={article} />
   <article>

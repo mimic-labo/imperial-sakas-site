@@ -96,6 +96,17 @@ import ComparisonTable from '../../components/article/ComparisonTable.astro';
 import FAQ from '../../components/article/FAQ.astro';
 import ExtLink from '../../components/article/ExtLink.astro';
 
+<figure class="article-hero">
+  <img
+    src="/article-images/claude-code-introduction-vscode-2026-hero.png"
+    alt="この図は Core エンティティ「Claude Code」の AI コーディングワークフローを象徴する、dark navy と gold のグラデーション抽象アート"
+    width="1024"
+    height="1024"
+    loading="eager"
+    decoding="async"
+  />
+</figure>
+
 <Conclusion variant="lead">
 **この記事の結論**
 
@@ -146,6 +157,26 @@ ChatGPT と Claude Code の決定的な違いは「ローカルファイルを�
 5. **サブエージェント**：大規模タスクを分割し、複数のエージェントに並列で実行させる
 
 <CitationCaption author="Anthropic 公式ドキュメント" url="https://code.claude.com/docs/en/overview" date="2026-05-03" type="official_doc" />
+
+### 全体像 — Claude Code を中心とした連携イメージ
+
+5 つの機能がどう連携するかを 1 枚の図で見ると、構造が掴みやすくなります。
+
+```mermaid
+flowchart LR
+  User([開発者]) -->|自然言語で指示| ClaudeCode[Claude Code]
+  ClaudeCode -->|読込・編集| Files[(プロジェクト<br/>ファイル)]
+  ClaudeCode -->|シェル実行| Term[ターミナル]
+  ClaudeCode -->|MCP 経由| Ext[外部ツール<br/>Slack / GA4 / Sheets]
+  ClaudeCode -.->|永続記憶| Memory[CLAUDE.md<br/>メモリ]
+  ClaudeCode -.->|並列実行| Sub[サブエージェント]
+  classDef core fill:#1e3a5f,color:#fff,stroke:#c9a64a,stroke-width:2px
+  classDef ext fill:#fff,color:#1a1a1a,stroke:#c9a64a
+  class ClaudeCode core
+  class Files,Term,Ext,Memory,Sub ext
+```
+
+中心の Claude Code に **5 つの腕**が伸びている、と捉えると関係性が頭に入ります。実線は「直接の操作」、破線は「永続化・並列化」の補助レイヤーです。
 
 次の章では、なぜ「今」Claude Code に触れるべきなのか、業界の動きを踏まえて整理します。
 
@@ -265,11 +296,18 @@ Claude Code はターミナル CLI 単体でも動きますが、私が VS Code 
 
 ### Step 5 — 最初の「Hello, Claude」を打つ
 
-認証が通ったら、簡単な質問を投げてみます。
+認証が通ったら、簡単な質問を投げてみます。ターミナル上では、たとえばこのようなやり取りになります。
 
-```
-このフォルダに README.md を作って、自己紹介を書いて
-```
+<figure>
+  <img
+    src="/code-cards/claude-code-introduction-vscode-2026-01.png"
+    alt="この図は Core エンティティ「Claude Code」と Adjacent エンティティ「ターミナル」の連携を示す自然言語指示の対話例。`claude` を起動し、自然言語の依頼で README.md が作成される様子をターミナル風 UI で再現"
+    width="1200"
+    height="600"
+    loading="lazy"
+    decoding="async"
+  />
+</figure>
 
 これだけで Claude Code は実際にファイルを作り、内容を書き込みます。**自然言語の指示が、PC への実際の操作になる**——この瞬間が Claude Code の本質です。
 
@@ -331,6 +369,37 @@ AI Coding ツールは多数ありますが、ターミナル未経験のマー�
 - **Google Antigravity**（Google）— 2025 年 11 月発表の新興、Gemini 3 統合
 
 OpenAI Codex CLI と OSS 系（Cline / Aider）は補足の段落で扱います。
+
+### 4 ツールの位置付けマップ — 「支援」vs「委譲」軸
+
+文章で並べてもピンと来づらいので、**「使い方の形態（IDE 内 / 拡張 / CLI）」と「依頼粒度（補完 / 編集 / 委譲）」**の 2 軸で位置を整理します。
+
+```mermaid
+flowchart TB
+  subgraph "AI Coding ツール俯瞰 (2026-05)"
+    direction LR
+    CC["Claude Code<br/>(Anthropic)"]
+    Cursor["Cursor<br/>(Anysphere)"]
+    Copilot["GitHub Copilot<br/>(GitHub / Microsoft)"]
+    AntiG["Google Antigravity<br/>(Google)"]
+  end
+
+  CC -->|形態| CCForm([CLI + VS Code 拡張])
+  CC -->|粒度| CCGrain([業務委譲型 / 自律実行])
+  Cursor -->|形態| CursorForm([専用 IDE / VS Code フォーク])
+  Cursor -->|粒度| CursorGrain([IDE 内補完・編集型])
+  Copilot -->|形態| CopilotForm([VS Code 拡張])
+  Copilot -->|粒度| CopilotGrain([インライン補完中心])
+  AntiG -->|形態| AntiForm([専用エディタ])
+  AntiG -->|粒度| AntiGrain([Gemini 3 統合・委譲型])
+
+  classDef tool fill:#1e3a5f,color:#fff,stroke:#c9a64a,stroke-width:2px
+  classDef form fill:#fff,color:#1a1a1a,stroke:#aaa
+  class CC,Cursor,Copilot,AntiG tool
+  class CCForm,CursorForm,CopilotForm,AntiForm,CCGrain,CursorGrain,CopilotGrain,AntiGrain form
+```
+
+ざっくり言えば、**「IDE の中で書く手を AI に支えてもらいたい」なら Cursor / Copilot**、**「業務タスクを丸ごと AI に任せたい」なら Claude Code / Antigravity** です。本記事では業務委譲型としての Claude Code を主役に据えています。
 
 ### Claude Code vs Cursor vs Copilot vs Antigravity
 

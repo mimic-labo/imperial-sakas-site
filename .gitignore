@@ -3,6 +3,13 @@ dist/
 # generated types
 .astro/
 
+# auto-generated images (regenerated each build via scripts/generate-og.mjs)
+public/og/
+public/hero/
+
+# code-card.mjs 出力先（記事ごとに生成される PNG はコミットする）
+# public/code-cards/ は git 管理対象（記事に紐づく成果物）
+
 # Wrangler (Cloudflare local dev cache)
 .wrangler/
 
