@@ -12,14 +12,14 @@
 //      Google AI Pro $10 credits 紐付き Cloud project を確認
 //   2. Google AI Studio (aistudio.google.com/apikey) で同 project を選んで
 //      新規 API key を発行
-//   3. Claude/credentials/.env の GEMINI_API_KEY を新 key で上書き
+//   3. Claude/credentials/.env の GEMINI_API_KEY_IMPERIAL_SAKAS を新 key で上書き
 //   4. （任意）~/.claude/settings.json に nanobanana-mcp-server を追加:
 //      {
 //        "mcpServers": {
 //          "nanobanana": {
 //            "command": "uvx",
 //            "args": ["nanobanana-mcp-server@latest"],
-//            "env": { "GEMINI_API_KEY": "${GEMINI_API_KEY}" }
+//            "env": { "GEMINI_API_KEY_IMPERIAL_SAKAS": "${GEMINI_API_KEY_IMPERIAL_SAKAS}" }
 //          }
 //        }
 //      }
@@ -36,7 +36,7 @@
 // （Imagen 3/4 は Paid プラン限定のため不採用）
 //
 // 環境変数:
-//   GEMINI_API_KEY  Google AI Studio で発行した API key
+//   GEMINI_API_KEY_IMPERIAL_SAKAS  Google AI Studio で発行した API key
 //
 // 使い方:
 //   node scripts/gemini-image-gen.mjs \
@@ -55,10 +55,10 @@ import { GoogleGenAI } from '@google/genai';
 const ROOT = process.cwd();
 const outDir = path.resolve(ROOT, 'public/article-images');
 
-const KEY = process.env.GEMINI_API_KEY;
+const KEY = process.env.GEMINI_API_KEY_IMPERIAL_SAKAS;
 if (!KEY) {
-  console.error('[gemini-image-gen] GEMINI_API_KEY が未設定です。');
-  console.error('  Claude/credentials/.env に GEMINI_API_KEY を追加してから source してください。');
+  console.error('[gemini-image-gen] GEMINI_API_KEY_IMPERIAL_SAKAS が未設定です。');
+  console.error('  Claude/credentials/.env に GEMINI_API_KEY_IMPERIAL_SAKAS を追加してから source してください。');
   process.exit(1);
 }
 
